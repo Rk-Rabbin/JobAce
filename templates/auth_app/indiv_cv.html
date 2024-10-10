@@ -1,0 +1,67 @@
+{% extends 'auth_app/base2.html' %}
+{% load static %}
+{% block title %}CV{% endblock title %}
+{% block main-content %}
+<div class="rk" style="padding-top:0px">
+  {% if cv %}
+    <div class="container my-5">
+     <div class="row">
+      <div class="col-sm-6 text-center align-self-center">
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+        {% endif %}
+
+        {% if cv.cv_file.url|slice:"-4:" == ".pdf" %}
+        {% comment %} <embed src="{{ cv.cv_file.url }}" type="application/pdf" width="100%" height="600px" /> {% endcomment %}
+        {% comment %} <iframe src="{{ cv.cv_file.url }}" width="100%" height="600px"></iframe> {% endcomment %}
+        {% comment %} <iframe src="{{ cv.cv_file.url }}" width="100%" height="600px" type="application/pdf"></iframe> {% endcomment %}
+        <div class="cv-button-container" style="text-align: center; margin: 30px 0;">
+            <a href="{{ cv.cv_file.url }}" target="_blank" class="cv-button" 
+               style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; 
+               text-decoration: none; border-radius: 5px; font-size: 16px; transition: background-color 0.3s;">
+               View CV (PDF)
+            </a>
+        </div>
+              {% else %}
+        <img src="{{ cv.cv_file.url }}" alt="CV Image" class="img-fluid img-thumbnail">
+      {% endif %}
+        {% comment %} <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small> {% endcomment %}
+      </div>
+      {% comment %} </div> {% endcomment %}
+      <div class="col-sm-5 offset-sm-1">
+        {% comment %} <h4 style="border-bottom: 1px solid #aaa;">CV Text:</h4> <br>
+        <p>{{cv.cv_text}}</p> {% endcomment %}
+        {% comment %} <a href="{% url 'updatepres' pres.id %}" class="btn btn-info shadow px-5 py-2 ms-4">Edit</a>
+        <a href="{% url 'confirm_pres_del' pres.id %}" class="btn btn-danger shadow px-5 py-2 ms-4">Delete</a> {% endcomment %}
+        <h4><Doctor>Candidate Name : {{request.user.username}}</h4>
+            <hr>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <h4 class="text-center">Email : {{request.user.email}}</h4>
+                  <h4 class="text-center">Uploaded At : {{cv.uploaded_at}}</h4>
+                  <h4>
+                </div>
+              </div>
+              <div class="delete-button-container" style="text-align: center; margin-top: 20px;">
+                <a href="#" 
+                   class="delete-button" 
+                   style="display: inline-block; padding: 10px 20px; background-color: #ff4c4c; color: white; 
+                   text-decoration: none; border-radius: 5px; font-size: 16px; transition: background-color 0.3s;">
+                   Delete CV
+                </a>
+              </div>
+        </div>
+      {% else %}
+        <h1 class="text-center alert alert-danger">No CV found</h1>
+        {% if messages %}
+        {% for message in messages %}
+              <p {% if message.tags %}class="text-center alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+        {% endfor %}
+     {% endif %}
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock main-content %}

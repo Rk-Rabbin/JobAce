@@ -1,0 +1,31 @@
+{% extends 'auth_app/base2.html' %}
+{% load static %}
+{% block title %}CV List{% endblock title %}
+{% block main-content %}
+<div class="container mt-6" style="padding-top:30px">
+    {% if cv %}
+        <h2 class="text-center alert alert-warning">{{request.user.username}}'s Uploaded Cvs</h2>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Uploaded At</th>
+                <th scope="col">Cv File</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for cv in cv %}
+                <tr>
+                    <th scope="row"><a href="{% url "indivcv" cv.id %}">{{cv.id}}</a></th>
+                    <td>{{cv.uploaded_at}}</td>
+                    <td>{{cv.cv_file}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+                <h4 class="text-center alert alert-danger"> No CV Found</h4>
+        {%endif%}
+</div>
+</div>   
+{% endblock main-content %}

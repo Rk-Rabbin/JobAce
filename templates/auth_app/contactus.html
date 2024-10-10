@@ -1,0 +1,101 @@
+{% extends 'auth_app/base3.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block main-content %}
+<div class="container">
+  <div class="row my-3" style="padding-top: 480px;">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="form-box" style="border: 2px solid black; border-radius: 15px; padding: 10px; margin-top: -450px">
+        <div class="header-text" style="color: black; font-family: 'Protest Strike', cursive; font-weight: bold; font-size: 35px; text-align: center;">
+          Contact Us
+        </div>
+        <hr>
+        <form action="" method="post" novalidate class="shadow p-5" style="color: black; font-family: 'Copperplate'; font-size: 20px; margin-top: 0px">
+          {% if messages %}
+            {% for message in messages %}
+              <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+            {% endfor %}
+          {% endif %}
+          {% csrf_token %}
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Name" style="border-radius: 10px; height: 45px; width: 100%;" required>
+
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" placeholder="Email" style="border-radius: 10px; height: 45px; width: 100%;" required>
+
+          <label for="msg">Message</label>
+          <textarea id="msg" name="msg" rows="2" cols="50" placeholder="Message" style="border-radius: 10px; width: 100%;" required></textarea>
+
+          <input type="submit" style="display: inline-block; padding: 8px 30px; background-color: #e2ec04; color: black; border-radius: 45px; -webkit-transition: all 0.3s; transition: all 0.3s; border: none; margin-top: 20px; width: 100%;" value="Submit">
+          <br>
+          <br>
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <p class="alert alert-danger my-3">{{error}}</p>
+            {% endfor %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Media Query for Small Devices (Mobile Phones) */
+  @media (max-width: 767px) {
+    .col-sm-6 {
+      width: 100%;
+    }
+    .form-box {
+      margin-top: 0;
+      padding: 5px;
+    }
+  }
+</style>
+
+{% endblock main-content %}
+
+{% comment %} {% extends 'mediaid/base3.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+{% block main-content %}
+<div class="container">
+ <div class="row my-3" style="padding-top:60px;">
+  <div class="col-sm-6 offset-sm-3">
+   <div class="form-box" style="  border: 2px solid black;border-radius: 15px;padding: 10px; margin-top:-450px">
+		<div class="header-text" style="color: black; font-family:'Dancing Script', cursive; font-weight:bold; font-size:35px; text-align:center;">
+			Contact Us
+        </div>
+            <hr>
+            <form action="" method="post" novalidate class="shadow p-5"  style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
+              {% if messages %}
+               {% for message in messages %}
+                     <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+               {% endfor %}
+              {% endif %}
+              {% csrf_token %}
+                  <label for="name">Name</label>
+                  <input type="text" id="name" name="name" placeholder="Name" style="border-radius:10px;height:45px; width:400px" required>
+      
+                  <br><label for="email">Email</label>
+                  <input type="text" id="email" name="email" placeholder="Email" style="border-radius:10px;height:45px; width:400px" required>
+
+                  <br><label for="msg">Message</label>
+                  <textarea id="msg" name="msg" rows="2" cols="50" placeholder="Message" style="border-radius:10px; width:400px" required></textarea>
+      
+               <br><input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #4A8693;color:black;border-radius: 45px;
+               -webkit-transition: all 0.3s;transition: all 0.3s;border: none; margin-top:50px; margin-left:150px" value="Submit"> <br>
+              <br>
+              {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %}
+                      <p class="alert alert-danger my-3">{{error}}</p>
+                  {% endfor %}
+              {% endif %}
+             </form>
+      </div>
+     </div>
+    </div>
+</div>
+    {% endblock main-content %} {% endcomment %}

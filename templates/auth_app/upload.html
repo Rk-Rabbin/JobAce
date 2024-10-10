@@ -1,0 +1,41 @@
+{% extends 'auth_app/base2.html' %}
+{% load static %}
+{% block title %}Upload Prescription{% endblock title %}
+{% block main-content %}
+
+<div class="container my-5 d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <div class="text-center">
+        <form action="" method="post" enctype="multipart/form-data" class="shadow p-5" style="border-radius: 15px; border: 2px solid black; padding: 20px; background-color: #f8f9fa;">
+            {% csrf_token %}
+            
+            <!-- Messages Section -->
+            {% if messages %}
+                {% for m in messages %}
+                    <p {% if m.tags %}class="alert alert-{{m.tags}} mb-5"{% endif %}>{{m}}</p>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Upload Section -->
+            <div class="form-group text-center">
+                <label for="upload" style="cursor: pointer;">
+                    <i class="fas fa-plus-circle fa-5x" style="color: #e2ec04;"></i>  <!-- Plus icon from Font Awesome -->
+                    <br><br>
+                    <span style="font-family: 'Copperplate', sans-serif; font-size: 24px; color: black;">Click to Upload</span>
+                </label>
+                <input type="file" id="upload" name="cv_file" required style="display: none;">
+            </div>
+
+            <!-- Submit Button -->
+            <input type="submit" value="Submit" class="btn btn-primary mt-4" style="padding: 10px 40px; border-radius: 45px; background-color: #e2ec04; border: none;">
+            
+            <!-- Error Handling -->
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <p class="alert alert-danger my-3">{{error}}</p>
+                {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock main-content %}

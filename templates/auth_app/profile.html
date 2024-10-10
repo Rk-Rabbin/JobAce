@@ -1,0 +1,34 @@
+{% extends 'auth_app/base2.html' %}
+{% load static %}
+{% block title %}Personal Information{% endblock title %}
+{% block main-content %}
+<div style="padding-top:20px">
+<div class="container my-5">
+ <div class="row">
+ <h3>Welcome <span class="text-capitalize">{{request.user.username}}</span></h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}}">Profile</a></li>
+    <li class="d-grid"><a href="{% url "upload_cv" %}"class="btn">Upload Cv</a></li>
+    <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
+    <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+   <div class="row">
+    <div class="col-sm-6">
+     <div class="card">
+      <div class="card-body">
+       <h3>Personal Information</h3>
+       <p>User Id: {{usr.id}}</p>
+       <p>Name: {{usr.username}}</p>
+       <p>Email: {{usr.email}}</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+</div>
+{% endblock main-content %}

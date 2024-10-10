@@ -1,0 +1,128 @@
+{% extends 'auth_app/base2.html' %}
+{% block title %}Chat Bot{% endblock title %}
+{% block style %}
+#chatbot {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 50px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+.bottext {
+    font-family: monospace;
+    font-size: 20px;
+    text-align: left;
+    line-height: 25px;
+    color: green;
+}
+
+.usertext {
+    font-family: monospace;
+    font-size: 20px;
+    text-align: right;
+    line-height: 25px;
+    color: blue;
+}
+
+#userInput {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    margin-top: 40px;
+    border-radius: 10px;
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+#textInput {
+    border: 3px solid white;
+    border-bottom: 3px solid #afafaf;
+    font-family: monospace;
+    font-size: 14px;
+    width: 85%;
+    padding: 16px;
+    color: black;
+}
+
+#buttonInput {
+    display: inline-block;
+    padding: 8px 30px;
+    background-color: #e2ec04;
+    color: black;
+    border-radius: 45px;
+    transition: all 0.3s;
+    border: none;
+}
+{% endblock style %}
+
+{% block main-content %}
+<div style="padding-top:20px">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-11 text-center mt-4 mb-4">
+                <h1 style="border-bottom: 1px solid #aaa;">ChatBot</h1>
+            </div>
+            <div class="col-sm-2 border-end">
+                <ul class="list-unstyled">
+                    <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
+                    <li class="d-grid"><a href="{% url 'chatbot' %}" class="btn {{active}}">ChatBot</a></li>
+                    <li class="d-grid"><a href="#" class="btn">Add CV</a></li>
+                    <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
+                    <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 offset-sm-1">
+                <div id="chatbot">
+                    <div id="chat-history">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="{{ message.type }}"><span>{{ message.user }}: {{ message.text }}</span></p>
+                            {% endfor %}
+                        {% else %}
+                            <p class="bottext"><span>Chatbot: Hi there</span></p>
+                        {% endif %}
+                    </div>
+                </div>
+                <form id="chat-form" method="post">
+                    {% csrf_token %}
+                    <div id="userInput">
+                        <input type="text" id="textInput" name="userMessage" placeholder="Type your query...." required/>
+                        <input type="submit" id="buttonInput" value="Send"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#chat-form").on("submit", function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            var userMessage = $("#textInput").val(); // Get user input
+            $.ajax({
+                url: "{% url 'chatbot' %}", // Update this with your actual URL
+                type: "POST",
+                data: {
+                    'userMessage': userMessage,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Append user message to chat history
+                    $("#chat-history").append("<p class='usertext'><span>You: " + userMessage + "</span></p>");
+                    // Append bot response to chat history
+                    $("#chat-history").append("<p class='bottext'><span>Chatbot: " + response.response + "</span></p>");
+                    $("#textInput").val(""); // Clear input field
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error: " + error); // Log any error for debugging
+                }
+            });
+        });
+    });
+</script>
+{% endblock main-content %}

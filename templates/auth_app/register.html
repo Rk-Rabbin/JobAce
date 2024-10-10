@@ -1,0 +1,50 @@
+{% extends 'auth_app/base3.html' %}
+{% load static %}
+{% block title %}Registration{% endblock title %}
+{% block style %}
+{% endblock style %}
+{% block main-content %}
+<div class="container" style="padding-top:480px">
+ <div class="row my-3">
+  <div class="col-sm-6 offset-sm-3">
+   <div class="form-box" style="border: 2px solid black;border-radius: 15px;padding: 10px; margin-top:-450px">
+		<div class="header-text" style="color: black; font-family:'Protest Strike', cursive; font-weight:bold; font-size:35px; text-align:center;">
+			Registration Form
+		</div>
+      <hr>
+
+      <form action="" method="post" style="color: black; font-family:'Copperplate'; font-size:30px">
+      {% if messages %}
+         {% for message in messages %}
+               <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{message}}</p>
+         {% endfor %}
+      {% endif %}
+         {% csrf_token %}
+         {% for fm in form %}
+         <div class ="form-group mb-3">
+            {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors | striptags}}</small>
+         </div>   
+         {% endfor %}
+       <input type="submit" value="Register" style="display: inline-block;padding: 8px 30px;background-color: #e2ec04;color: black;
+         border-radius: 45px;-webkit-transition: all 0.3s;transition: all 0.3s;border: none;">
+         
+         <a href="{% url 'social:begin' 'google-oauth2' %}" 
+         style="padding: 18px 30px;background-color: #e2ec04;color: black;border-radius: 45px; font-size:18px;
+         -webkit-transition: all 0.3s;transition: all 0.3s;border: none;"> <span class="fa fa-google-plus"></span> Google </a> 
+         <br>
+         
+         <div class="text-center text-primary fw-bold">
+            {% comment %} <small>Existing User? <a href="{% url 'login' %}" class="text-danger"> Login Now</a></smaill> {% endcomment %}
+         </div>
+         {% if form.non_field_errors %}
+         {% for error in form.non_field_errors %}
+            <p class="alert alert-danger my-3">{{error}}</p>
+         {% endfor %}
+         {% endif %}
+      </form>
+   </div> 
+  </div>
+ </div>
+</div>
+{% endblock main-content %}
+
