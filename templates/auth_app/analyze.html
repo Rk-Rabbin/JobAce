@@ -1,0 +1,73 @@
+{% extends 'auth_app/base2.html' %}
+{% load static %}
+{% block title %}Credentials Form{% endblock title %}
+{% block main-content %}
+<div class="container" style="padding-top:20px; padding-bottom:40px">
+    <div class="row my-6">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="form-box" style="border: 2px solid black;border-radius: 15px;padding: 10px;">
+                <div class="header-text" style="color: black; font-family:'Protest Strike', cursive; font-weight:bold; font-size:35px">
+                    Credentials Form
+                </div>
+                <hr>
+                <form action="" method="post" novalidate class="shadow p-5" style="color: black; font-family:'Copperplate'; font-size:20px; margin-top:0px">
+                    {% csrf_token %}
+                    
+                    <!-- Messages Section -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p {% if message.tags %}class="alert alert-{{message.tags}} mb-5"{% endif %}>{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Form Fields -->
+                    <div style="margin-bottom: 15px;">
+                        <label for="position">Position</label><br>
+                        <input type="text" id="position" name="position" placeholder="Enter your desired position" style="border-radius:10px;height:45px; width:100%" required>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="experience_level">Experience Level</label><br>
+                        <select id="experience_level" name="experience_level" style="border-radius:10px;height:45px; width:100%" required>
+                            <option value="entry">Entry-level</option>
+                            <option value="mid">Mid-level</option>
+                            <option value="senior">Senior-level</option>
+                        </select>
+                    </div><br>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="education_level">Education Level</label><br>
+                        <select id="education_level" name="education_level" style="border-radius:10px;height:45px; width:100%" required>
+                            <option value="highschool">High School</option>
+                            <option value="bachelor">Bachelor's Degree</option>
+                            <option value="master">Master's Degree</option>
+                            <option value="phd">PhD</option>
+                        </select>
+                    </div><br>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="educational_background">Educational Background</label><br>
+                        <textarea id="educational_background" name="educational_background" rows="4" placeholder="Provide details about your educational background (e.g., institutions, degrees, majors, etc.)" style="border-radius:10px; width:100%" required></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label for="skills">Skills</label><br>
+                        <textarea id="skills" name="skills" rows="4" placeholder="Comma-separated skills" style="border-radius:10px; width:100%" required></textarea>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <input type="submit" style="display: inline-block;padding: 8px 30px;background-color: #e2ec04;color:black;border-radius: 45px;
+                        -webkit-transition: all 0.3s;transition: all 0.3s;border: none;" value="Submit">
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="alert alert-danger my-3">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

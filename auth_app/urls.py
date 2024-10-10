@@ -18,6 +18,7 @@ urlpatterns = [
     path('indiv_cv/<int:id>', views.IndivCv , name='indivcv'),
     path('upload/', views.upload_cv, name='upload_cv'),
     path('favicon.ico', views.favicon_view, name='favicon'),
+    path('analyze/',views.credentials_form, name='analyze'),
 
 
 

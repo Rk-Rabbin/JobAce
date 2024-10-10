@@ -69,7 +69,7 @@
                 <ul class="list-unstyled">
                     <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
                     <li class="d-grid"><a href="{% url 'chatbot' %}" class="btn {{active}}">ChatBot</a></li>
-                    <li class="d-grid"><a href="#" class="btn">Add CV</a></li>
+                    <li class="d-grid"><a href="{% url "upload_cv" %}" class="btn">Add CV</a></li>
                     <li class="d-grid"><a href="{% url 'changepassword' %}" class="btn">Change Password</a></li>
                     <li class="d-grid"><a href="{% url 'logout' %}" class="btn">Logout</a></li>
                 </ul>

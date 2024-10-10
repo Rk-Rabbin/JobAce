@@ -17,6 +17,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 import sys
 import logging
+import openai
 
 def favicon_view(request):
     return HttpResponse(status=204)  # No content
@@ -133,62 +134,79 @@ def upload_cv(request):
     return render(request, 'auth_app/upload.html', {'form': form})
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+def credentials_form(request):
+    if request.method == "POST":
+        position = request.POST.get('position')
+        experience_level = request.POST.get('experience_level')
+        education_level = request.POST.get('education_level')
+        educational_background = request.POST.get('educational_background')
+        skills = request.POST.get('skills')
+
+        user_data = {
+            'position': position,
+            'experience_level': experience_level,
+            'education_level': education_level,
+            'educational_background': educational_background,
+            'skills': skills
+        }
+
+        questions = generate_interview_questions(user_data)
+
+        if isinstance(questions, str):  # This means there was an error
+            return render(request, 'auth_app/display_questions.html', {'error_message': questions})
+        else:  # No error, return the list of questions
+            return render(request, 'auth_app/display_questions.html', {'questions': questions})
+
+        # messages.success(request, f"Interview questions for the position {position} have been generated!")
+        
+        # return render(request, 'auth_app/display_questions.html', {'questions': questions})
+
+    return render(request, 'auth_app/analyze.html')
 
 
 
-def extract_text_from_pdf(file_path):
+def generate_interview_questions(user_data):
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an expert in conducting job interviews."
+        },
+        {
+            "role": "user",
+            "content": (
+                f"I have a candidate with the following information:\n"
+                f"- Position: {user_data['position']}\n"
+                f"- Experience Level: {user_data['experience_level']}\n"
+                f"- Education Level: {user_data['education_level']}\n"
+                f"- Educational Background: {user_data['educational_background']}\n"
+                f"- Skills: {user_data['skills']}\n"
+                f"Please generate 5 interview questions with short answers for this position."
+            )
+        }
+    ]
+
     try:
-        with pdfplumber.open(file_path) as pdf:
-            text = ""
-            for page in pdf.pages:
-                text += page.extract_text() or ''
-            return text
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo", 
+            messages=messages,
+            max_tokens=350, 
+            temperature=0.7, 
+        )
+
+        questions = response.choices[0].message.content.strip().split('\n')
+
+        return questions
+
     except Exception as e:
-        print(f"Error extracting text: {e}")
-        return ""
+        error_message = f"Error generating interview questions: {str(e)}"
+        print(error_message) 
+        return error_message 
 
 
 
-# @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-# @login_required
-# def chatbot(request):
-#     usr = request.user
-#     chatbot_response = None  # Initialize chatbot_response variable
-#     user_input = None  # Initialize user_input variable
-
-#     if request.method == 'POST':
-#         user_input = request.POST.get('userMessage')
-#         prompt = user_input
-
-#         try:
-#             # Make the API request to OpenAI
-#             response = openai.Completion.create(
-#                 engine='text-davinci-003',
-#                 prompt=prompt,
-#                 max_tokens=256,
-#                 temperature=0.5,
-#             )
-
-#             # Check the HTTP status code in the response
-#             if response.status_code == 200:
-#                 chatbot_response = response.choices[0].text  # Store chatbot response
-
-#         except Exception as e:
-#             # Handle any exceptions that may occur during the API request
-#             error_message = f"An error occurred: {str(e)}"
-#             return render(request, 'mediaid/chat.html', {
-#                 'usr': usr,
-#                 'error_message': error_message,
-#                 'active': 'btn-info'
-#             })
-
-#     # Render the chat.html template with chatbot_response and user_input
-#     return render(request, 'auth_app/chat.html', {
-#         'usr': usr,
-#         'response': chatbot_response,
-#         'user_input': user_input,
-#         'active': 'btn-info'
-#     })
 
 logger = logging.getLogger(__name__)
 

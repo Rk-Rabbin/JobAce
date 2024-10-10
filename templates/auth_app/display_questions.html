@@ -1,0 +1,25 @@
+{% extends 'auth_app/base2.html' %}
+{% block title %}Interview Questions{% endblock title %}
+{% block main-content %}
+<div class="container" style="padding-top:20px; padding-bottom:40px">
+    <div class="row my-6">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="form-box" style="border: 2px solid black;border-radius: 15px;padding: 20px;">
+                <div class="header-text" style="color: black; font-family:'Protest Strike', cursive; font-weight:bold; font-size:35px">
+                    Generated Interview Questions
+                </div>
+                <hr>
+                <div class="questions-list" style="color: black; font-family:'Copperplate'; font-size:20px;">
+                    {% if error_message %}
+                        <div style="color: red; font-weight: bold;">{{ error_message }}</div>
+                    {% else %}
+                        {% for question in questions %}
+                            <ul>{{ question }}</ul>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}
